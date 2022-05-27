@@ -1,13 +1,25 @@
-import './App.css';
+// import './App.css';
+import { Component } from "react";
+import {Map, GoogleApiWrapper} from "google-maps-react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Urban Trails</h1>
-      </header>
-    </div>
-  );
+class MapContainer extends Component {
+  render() {
+    return(
+      <Map
+        google = {this.props.google}
+        style = {{width: "100%", height: "100%"}}
+        zoom = {10}
+        initialCenter = {
+          {
+          lat: 47.6062,
+          lng: -122.3321
+          }
+        }
+      />
+    );
+  }
 }
 
-export default App;
+export default GoogleApiWrapper({
+  apiKey: ""
+})(MapContainer)
