@@ -10,14 +10,13 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-            e.preventDefault()
+            e.preventDefault();
             setError('')
-            try{
+            try {
                 await createUser(email, password)
                 navigate('/map') 
             } catch (e) {
                 setError(e.message)
-                console.log(e.message)
             }
     }
 

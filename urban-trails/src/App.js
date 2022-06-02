@@ -5,12 +5,14 @@ import Account from './components/Account';
 import Map from './components/Map';
 import { Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext'; 
-// require('dotenv').config({path: path.resolve(__dirname+'/.env')})
+import { Link } from 'react-router-dom';
 
 function App() {
   return (
     <div>
       <h1>Urban Trails</h1>
+      <Link to="/map" className="underline">Home</Link><br/>
+      <Link to="/account" className="underline">Account</Link><br/><br/>
       <AuthContextProvider>
       <Routes>
         <Route path='/' element={<Signin />} />
