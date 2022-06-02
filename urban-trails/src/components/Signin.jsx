@@ -18,7 +18,7 @@ const Signin = () => {
             </div>
             <button>Sign In</button>
             <p>
-                Don't have an account? <Link to="/signup" classname="underline">Sign up</Link> 
+                Don't have an account? <Link to="/signup" className="underline">Sign up</Link> 
             </p>
         </form>
     </div> 
