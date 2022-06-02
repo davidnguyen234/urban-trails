@@ -1,25 +1,22 @@
-// import './App.css';
-import { Component } from "react";
-import {Map, GoogleApiWrapper} from "google-maps-react";
+import React from "react";
+import Signin from './components/Signin';
+import Signup from './components/Signup';
+import Account from './components/Account';
+import Map from './components/Map';
+import { Route, Routes } from 'react-router-dom';
 
-class MapContainer extends Component {
-  render() {
-    return(
-      <Map
-        google = {this.props.google}
-        style = {{width: "100%", height: "100%"}}
-        zoom = {10}
-        initialCenter = {
-          {
-          lat: 47.6062,
-          lng: -122.3321
-          }
-        }
-      />
-    );
-  }
+function App() {
+  return (
+    <div>
+      <h1>Urban Trails</h1>
+      <Routes>
+        <Route path='/' element={<Signin />} />
+        <Route path='/account' element={<Account />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/map' element={<Map />} />
+      </Routes>
+    </div>
+  )
 }
 
-export default GoogleApiWrapper({
-  apiKey: ""
-})(MapContainer)
+export default App;
