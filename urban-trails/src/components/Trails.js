@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase-config';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 
 const Trails = () => {
     const [newName, setNewName] = useState("")
@@ -16,6 +16,11 @@ const Trails = () => {
     const createTrail = async () => {
         await addDoc(trailsCollectionRef, {name: newName, description: newDescription, latitude: newLatitude, longitude: newLongitude , image: newImage})
     }
+
+    const deleteTrail = async (id) => {
+        const trailDoc = doc(db, "trails", id); 
+        await deleteDoc(trailDoc)
+    };
     
     useEffect(() => {
         
@@ -54,6 +59,8 @@ const Trails = () => {
                         <h3>{trail.name}</h3>
                         <p>{trail.description}</p>
                         <p>Coordinates: {trail.latitude}, {trail.longitude}</p>
+                        <button onClick={() => {deleteTrail(trail.id)}
+                        }>Delete Trail</button><br/><br/><br/>
                     </div>    
                 ) 
             })}
