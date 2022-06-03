@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 const Trails = () => {
+    const [newName, setNewName] = useState("")
+    const [newDescription, setNewDescription] = useState("")
+    const [newImage, setNewImage] = useState("")
+    const [newLatitude, setNewLatitude] = useState(0)
+    const [newLongitude, setNewLongitude] = useState(0)
+
+
     const [trails, setTrails] = useState([]);
     const trailsCollectionRef = collection(db, "trails")
+    
+    const createTrail = async () => {
+        await addDoc(trailsCollectionRef, {name: newName, description: newDescription, latitude: newLatitude, longitude: newLongitude , image: newImage})
+    }
+    
     useEffect(() => {
         
         const getTrails = async () => {
             const data = await getDocs(trailsCollectionRef);
             setTrails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
-            console.log(data.docs)
         };
         getTrails()
     }, [])
@@ -18,14 +29,31 @@ const Trails = () => {
     return (
         <div>
             <h1>Trails</h1>
+            <input placeholder="Name" onChange={(event) => {
+                setNewName(event.target.value);
+            }}></input>
+            <input placeholder="Description" onChange={(event) => {
+                setNewDescription(event.target.value);
+            }}></input>
+            <input type="number" placeholder="Latitude" onChange={(event) => {
+                setNewLatitude(event.target.value);
+            }}></input>
+            <input type="number" placeholder="Longitude" onChange={(event) => {
+                setNewLongitude(event.target.value);
+            }}></input>
+            <input placeholder="Image" onChange={(event) => {
+                setNewImage(event.target.value);
+            }}></input>
+            <button onClick={createTrail}>Add Trail</button><br/><br/><br/>
+
             {trails.map((trail) => {
                 return (
                     <div>
                         {" "}
+                        <img src={trail.image} onerror="this.style.display='none'"/>
                         <h3>{trail.name}</h3>
-                        <img src={trail.image} alt="trail" />
                         <p>{trail.description}</p>
-                        <p>Coordinates: {trail.location.latitude}, {trail.location.longitude}</p>
+                        <p>Coordinates: {trail.latitude}, {trail.longitude}</p>
                     </div>    
                 ) 
             })}
