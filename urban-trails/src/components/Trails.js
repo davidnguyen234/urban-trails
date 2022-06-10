@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase-config';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import Navigation from './Navigation';
+import '../App.css';
 
 const Trails = () => {
     const [newName, setNewName] = useState("")
@@ -32,7 +34,11 @@ const Trails = () => {
     }, [])
 
     return (
+    <div>  
         <div>
+        <Navigation />
+        </div>
+        <div className="content">
             <h1>Trails</h1>
             <input placeholder="Name" onChange={(event) => {
                 setNewName(event.target.value);
@@ -65,6 +71,7 @@ const Trails = () => {
                 ) 
             })}
         </div>
+    </div>
     )
 }
 
