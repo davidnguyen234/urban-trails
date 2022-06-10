@@ -6,16 +6,13 @@ import Map from './components/Map';
 import Trails from './components/Trails';
 import { Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext'; 
-import { Link } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import 'bootstrap/dist/css/bootstrap.css';
+import './App.css';
 
 function App() {
   return (
     <div>
-      <h1>Urban Trails</h1>
-      <Link to="/map" className="underline">Home</Link><br/>
-      <Link to="/account" className="underline">Account</Link><br/>
-      <Link to="/trails" className="underline">Trails</Link><br/><br/>
       <AuthContextProvider>
       <Routes>
         <Route path='/' element={<Signin />} />
@@ -34,7 +31,7 @@ function App() {
           </ProtectedRoute>} />
       </Routes>
       </AuthContextProvider>
-    </div>
+      </div>
   )
 }
 
