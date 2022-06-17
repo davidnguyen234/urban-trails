@@ -61,7 +61,7 @@ const Trails = () => {
                 return (
                     <div>
                         {" "}
-                        <img src={trail.image} onerror="this.style.display='none'"/>
+                        <img src={trail.image} alt="trail"/>
                         <h3>{trail.name}</h3>
                         <p>{trail.description}</p>
                         <p>Coordinates: {trail.latitude}, {trail.longitude}</p>
