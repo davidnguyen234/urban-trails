@@ -7,7 +7,7 @@ function Navigation() {
     <div>
       <Navbar bg="dark" variant="dark" fixed="top" expand="sm" collapseOnSelect>
       <Navbar.Brand>
-        <Nav.Link href="/map">Urban Trails</Nav.Link>
+      <Nav.Link href="/map" style={{ color: '#FFF' }}>Urban Trails</Nav.Link>
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse>
