@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase-config';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc, doc, GeoPoint } from 'firebase/firestore';
 import Navigation from './Navigation';
 import '../App.css';
 
 const Trails = () => {
-    const [newName, setNewName] = useState("")
+    const [newTitle, setNewTitle] = useState("")
     const [newDescription, setNewDescription] = useState("")
     const [newImage, setNewImage] = useState("")
     const [newLatitude, setNewLatitude] = useState(0)
     const [newLongitude, setNewLongitude] = useState(0)
-
-
     const [trails, setTrails] = useState([]);
     const trailsCollectionRef = collection(db, "trails")
     
     const createTrail = async () => {
-        await addDoc(trailsCollectionRef, {name: newName, description: newDescription, latitude: newLatitude, longitude: newLongitude , image: newImage})
+        await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription,
+            location: new GeoPoint(newLatitude, newLongitude),
+            image: newImage})
     }
 
     const deleteTrail = async (id) => {
@@ -41,7 +41,7 @@ const Trails = () => {
         <div className="content">
             <h1>Trails</h1>
             <input placeholder="Name" onChange={(event) => {
-                setNewName(event.target.value);
+                setNewTitle(event.target.value);
             }}></input>
             <input placeholder="Description" onChange={(event) => {
                 setNewDescription(event.target.value);
@@ -62,9 +62,9 @@ const Trails = () => {
                     <div>
                         {" "}
                         <img src={trail.image} alt="trail"/>
-                        <h3>{trail.name}</h3>
+                        <h3>{trail.title}</h3>
+                        <p>{trail.location.latitude}° N, {trail.location.longitude}° W</p>
                         <p>{trail.description}</p>
-                        <p>Coordinates: {trail.latitude}, {trail.longitude}</p>
                         <button onClick={() => {deleteTrail(trail.id)}
                         }>Delete Trail</button><br/><br/><br/>
                     </div>    
