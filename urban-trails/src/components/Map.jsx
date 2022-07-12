@@ -12,24 +12,33 @@ export class MapContainer extends Component {
     };
   
     componentDidMount() {
-      fetch("https://firestore.googleapis.com/v1beta1/projects/urban-trails-3a784/databases/(default)/documents/trails")
+      fetch(`${process.env.REACT_APP_FIRESTORE_URL}`)
       .then(response => response.json())
-      .then(data => this.setState({ trailLocations: data}))
+      .then(data => this.setState({ trailLocations: data.documents}))
   };
   
   renderTrails() {
-    console.log(this.state.trailLocations)
-    return this.state.trailLocations.map((trails, i) => { 
+    return this.state.trailLocations.map((trails, i) => {
+      const trailLocation = {
+        id: trails.name, 
+        latitude: trails.fields.location.geoPointValue.latitude,
+        longitude: trails.fields.location.geoPointValue.longitude, 
+        title: trails.fields.title.stringValue,
+        description: trails.fields.description.stringValue,
+        image: trails.fields.image.stringValue
+      }
       return <Marker
             key={i}
             onClick={this.trailClick}
-            id={trails.id}
+            id={trailLocation.id}
             position={{
-              lat: trails.latitude,
-              lng: trails.longitude
+              lat: trailLocation.latitude,
+              lng: trailLocation.longitude
             }}
-            title={trails.title}
-            description={trails.description}
+            title={trailLocation.title}
+            description={trailLocation.description}
+            latitude={trailLocation.latitude}
+            longitude={trailLocation.longitude}
           />
       })
   };
@@ -74,17 +83,15 @@ export class MapContainer extends Component {
           onClose={this.onInfoWindowClose}
         >
           <div id="info">
-            <h3> Trail {this.state.selectedTrail.id}</h3> <br></br>
             <p>{this.state.selectedTrail.title}</p>
             <p>{this.state.selectedTrail.description}</p>
-    <br></br>
+            <p>{this.state.selectedTrail.latitude}° N, {this.state.selectedTrail.longitude}° W</p>
           </div>
         </InfoWindow>
       </Map>
       </div>
     </div>
-  );
-  }
+    )}
   }
   
   export default GoogleApiWrapper({
