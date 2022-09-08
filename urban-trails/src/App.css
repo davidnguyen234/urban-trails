@@ -38,3 +38,18 @@
   margin-top: 5%;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+#row {
+ width: fit-content;
+ margin-left: -110px;
+}
+
+#slide-panel {
+  margin-top: 50px;
+  max-width: 20%;
+  padding: 2%;
+}
+
+#map {
+  margin-top: 20px;
+}
