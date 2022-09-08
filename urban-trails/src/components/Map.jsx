@@ -1,11 +1,17 @@
 import React, {Component } from 'react';
-import {Map, GoogleApiWrapper, Marker, InfoWindow} from "google-maps-react";
+import {Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import Navigation from './Navigation';
 import '../App.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import TrailsList from './TrailsList';
+import SlidingPanel from 'react-sliding-side-panel';
+
 
 export class MapContainer extends Component {
     state = {
-      showInfoWindow: false,
+      showSidePanel: false,
       activeTrail: {},
       selectedTrail: {},
       trailLocations: []
@@ -35,6 +41,7 @@ export class MapContainer extends Component {
               lat: trailLocation.latitude,
               lng: trailLocation.longitude
             }}
+            image={trailLocation.image}
             title={trailLocation.title}
             description={trailLocation.description}
             latitude={trailLocation.latitude}
@@ -47,13 +54,13 @@ export class MapContainer extends Component {
   this.setState({
     selectedTrail: props,
     activeTrail: marker,
-    showInfoWindow: true
+    showSidePanel: true
   });
   
   mapClick = () => {
-  if (this.state.showInfoWindow) {
+  if (this.state.showSidePanel) {
     this.setState({
-      showInfoWindow: false,
+      showSidePanel: false,
       activeTrail: null
     })
   }
@@ -62,33 +69,47 @@ export class MapContainer extends Component {
   render() {
   return (
     <div>
+        <div>
+          <Navigation />    
+        </div>
       <div>
-      <Navigation />
-      </div>
-      <div>
-      <Map google={this.props.google}
-        center={{
-          lat: 47.606209,
-          lng: -122.332069
-        }}
-        zoom={11}
-        onClick={this.mapClick}
-      >
-    
-        {this.renderTrails()}
-
-        <InfoWindow
-          marker={this.state.activeTrail}
-          visible={this.state.showInfoWindow}
-          onClose={this.onInfoWindowClose}
-        >
-          <div id="info">
-            <p>{this.state.selectedTrail.title}</p>
+        <div>
+        </div>
+      <Container>
+        <Row id="row">
+          <Col id="slide-panel" sm={8} md={8} lg={2}>
+            <SlidingPanel 
+            type={'left'} 
+            size={200}
+            marker={this.state.activeTrail}
+            isOpen={this.state.showSidePanel}
+            >
+            <div>
+            <img src={this.state.selectedTrail.image} style={{maxWidth: 300}}/><br/><br/>
+            <h4>{this.state.selectedTrail.title}</h4>
             <p>{this.state.selectedTrail.description}</p>
             <p>{this.state.selectedTrail.latitude}° N, {this.state.selectedTrail.longitude}° W</p>
-          </div>
-        </InfoWindow>
-      </Map>
+            </div>
+            <TrailsList />
+            </SlidingPanel>
+          </Col>
+          <Col id="map">
+            <Map 
+            google={this.props.google}
+            center={{
+              lat: 47.64442,
+              lng: -122.22979
+            }}
+            zoom={11}
+            onClick={this.mapClick}
+            >
+            {this.renderTrails()}
+            </Map>
+            </Col>
+        </Row>
+      </Container>
+      </div>
+      <div>
       </div>
     </div>
     )}
