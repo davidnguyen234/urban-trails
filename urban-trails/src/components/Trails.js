@@ -3,11 +3,14 @@ import { db } from '../firebase-config';
 import { collection, getDocs, addDoc, deleteDoc, doc, GeoPoint } from 'firebase/firestore';
 import Navigation from './Navigation';
 import '../App.css';
+import { storage } from '../firebase-config';
+import { ref, uploadBytes } from 'firebase/storage';
+import {v4} from 'uuid';
 
 const Trails = () => {
     const [newTitle, setNewTitle] = useState("")
     const [newDescription, setNewDescription] = useState("")
-    const [newImage, setNewImage] = useState("")
+    const [newImage, setNewImage] = useState(null)
     const [newLatitude, setNewLatitude] = useState(0)
     const [newLongitude, setNewLongitude] = useState(0)
     const [trails, setTrails] = useState([]);
@@ -23,6 +26,14 @@ const Trails = () => {
         const trailDoc = doc(db, "trails", id); 
         await deleteDoc(trailDoc)
     };
+
+    const uploadImage = () => {
+        if (newImage == null) return;
+        const imageRef = ref(storage, `images/${newImage.name + v4()}`)
+        uploadBytes(imageRef, newImage).then(() => {
+            alert("Image Uploaded")
+        })
+    }
     
     useEffect(() => {
         
@@ -52,9 +63,10 @@ const Trails = () => {
             <input type="number" placeholder="Longitude" onChange={(event) => {
                 setNewLongitude(event.target.value);
             }}></input>
-            <input placeholder="Image" onChange={(event) => {
-                setNewImage(event.target.value);
+            <input type="file" onChange={(event) => {
+                setNewImage(event.target.files[0]);
             }}></input>
+            <button onClick={uploadImage}>Upload Image</button>
             <button onClick={createTrail}>Add Trail</button><br/><br/><br/>
 
             {trails.map((trail) => {
