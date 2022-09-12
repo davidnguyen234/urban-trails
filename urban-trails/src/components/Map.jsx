@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import {Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
+import {Map, GoogleApiWrapper, Marker } from "google-maps-react";
 import Navigation from './Navigation';
 import '../App.css';
 import Container from 'react-bootstrap/Container';
@@ -85,7 +85,7 @@ export class MapContainer extends Component {
             isOpen={this.state.showSidePanel}
             >
             <div>
-            <img src={this.state.selectedTrail.image} style={{maxWidth: 300}}/><br/><br/>
+            <img src={this.state.selectedTrail.image} style={{maxWidth: 300}} alt=""/><br/><br/>
             <h4>{this.state.selectedTrail.title}</h4>
             <p>{this.state.selectedTrail.description}</p>
             <p>{this.state.selectedTrail.latitude}° N, {this.state.selectedTrail.longitude}° W</p>

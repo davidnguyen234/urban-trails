@@ -4,8 +4,12 @@ import { collection, getDocs, addDoc, deleteDoc, doc, GeoPoint } from 'firebase/
 import Navigation from './Navigation';
 import '../App.css';
 import { storage } from '../firebase-config';
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import {v4} from 'uuid';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 const Trails = () => {
     const [newTitle, setNewTitle] = useState("")
@@ -17,9 +21,22 @@ const Trails = () => {
     const trailsCollectionRef = collection(db, "trails")
     
     const createTrail = async () => {
+        const imageUrl = await uploadImage();
         await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription,
             location: new GeoPoint(newLatitude, newLongitude),
-            image: newImage})
+            image: imageUrl})
+
+    }
+
+    const uploadImage = async () => {
+        if (newImage == null) return;
+        const imageRef = ref(storage, `${newImage.name + v4()}`)
+        const result = await uploadBytes(imageRef, newImage);
+        const downloadUrl = await getDownloadURL(result.ref);
+        console.log(`uploadResult: ${JSON.stringify(downloadUrl)}`);
+
+        return downloadUrl;
+
     }
 
     const deleteTrail = async (id) => {
@@ -27,13 +44,7 @@ const Trails = () => {
         await deleteDoc(trailDoc)
     };
 
-    const uploadImage = () => {
-        if (newImage == null) return;
-        const imageRef = ref(storage, `images/${newImage.name + v4()}`)
-        uploadBytes(imageRef, newImage).then(() => {
-            alert("Image Uploaded")
-        })
-    }
+
     
     useEffect(() => {
         
@@ -50,28 +61,51 @@ const Trails = () => {
         <Navigation />
         </div>
         <div className="content">
-            <h1>Trails</h1>
-            <input placeholder="Name" onChange={(event) => {
+            <Form>
+                <Form.Group className="mb-3" controlId="formGridTitle">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control onChange={(event) => {
                 setNewTitle(event.target.value);
-            }}></input>
-            <input placeholder="Description" onChange={(event) => {
-                setNewDescription(event.target.value);
-            }}></input>
-            <input type="number" placeholder="Latitude" onChange={(event) => {
+            }}/>
+                </Form.Group>
+
+                <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridLatitude">
+                    <Form.Label>Latitude</Form.Label>
+                    <Form.Control onChange={(event) => {
                 setNewLatitude(event.target.value);
-            }}></input>
-            <input type="number" placeholder="Longitude" onChange={(event) => {
+            }} type="number" step=".00001" />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridLongitude">
+                    <Form.Label>Longitude</Form.Label>
+                    <Form.Control onChange={(event) => {
                 setNewLongitude(event.target.value);
-            }}></input>
-            <input type="file" onChange={(event) => {
+            }} type="number" step=".00001" />
+                    </Form.Group>
+                </Row>
+
+                <Form.Group className="mb-3" controlId="formGridDescription">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control onChange={(event) => {
+                setNewDescription(event.target.value);
+            }}/>
+                </Form.Group>  
+
+                <input type="file" onChange={(event) => {
                 setNewImage(event.target.files[0]);
-            }}></input>
-            <button onClick={uploadImage}>Upload Image</button>
-            <button onClick={createTrail}>Add Trail</button><br/><br/><br/>
+            }}/>   
+
+                <Button onClick={createTrail} variant="primary" type="submit">
+                    Submit
+                </Button><br /><br />
+
+                </Form>       
 
             {trails.map((trail) => {
                 return (
                     <div>
+                        <br></br>
                         {" "}
                         <img src={trail.image} alt="trail"/>
                         <h3>{trail.title}</h3>
