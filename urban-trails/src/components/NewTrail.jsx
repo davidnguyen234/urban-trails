@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-
-    Link
-  } from "react-router-dom";
 import { db } from '../firebase-config';
 import { collection, getDocs, addDoc, GeoPoint } from 'firebase/firestore';
 import Navigation from './Navigation';
 import '../App.css';
+import { storage } from '../firebase-config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const NewTrail = () => {
     const [newTitle, setNewTitle] = useState("")
@@ -18,9 +16,10 @@ const NewTrail = () => {
     const trailsCollectionRef = collection(db, "trails")
     
     const createTrail = async () => {
+        const imageUrl = await uploadImage();
         await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription,
             location: new GeoPoint(newLatitude, newLongitude),
-            image: newImage})
+            image: imageUrl})
     }
   
     useEffect(() => {
@@ -32,7 +31,19 @@ const NewTrail = () => {
         getTrails()
     }, [])
 
+    const uploadImage = async () => {
+        if (newImage == null) return;
+        const imageRef = ref(storage, `${newImage.name }`)
+        const result = await uploadBytes(imageRef, newImage);
+        const downloadUrl = await getDownloadURL(result.ref);
+        console.log(`uploadResult: ${JSON.stringify(downloadUrl)}`);
+
+        return downloadUrl;
+
+    }
+
     return (
+        <div>
     <div>  
         <div>
         <Navigation />
@@ -52,11 +63,14 @@ const NewTrail = () => {
             <input type="number" placeholder="Longitude" onChange={(event) => {
                 setNewLongitude(event.target.value);
             }}></input>
-            <input placeholder="Image" onChange={(event) => {
-                setNewImage(event.target.value);
-            }}></input>
             <button onClick={createTrail}>Add Trail</button><br/><br/><br/>
             </div>
+    </div>
+    <div>
+         <input type="file" onChange={(event) => {
+                setNewImage(event.target.files[0]);
+            }}/> 
+    </div>
     </div>
          
     )
