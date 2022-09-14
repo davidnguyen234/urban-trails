@@ -13,8 +13,9 @@ function Navigation() {
       <Navbar.Collapse>
       <Nav>
         <NavDropdown title="Trails">
-        <NavDropdown.Item href="">View All Trails</NavDropdown.Item>
-          <NavDropdown.Item href="/trails">Manage Trails</NavDropdown.Item>
+        <NavDropdown.Item href="/trails">View Trails</NavDropdown.Item>
+        <NavDropdown.Item href="/new/trail">Add Trail</NavDropdown.Item>
+        <NavDropdown.Item href="/manage/trails">Manage Trails</NavDropdown.Item>
         </NavDropdown>
         <Nav.Link href="/account">Account</Nav.Link>
       </Nav>
