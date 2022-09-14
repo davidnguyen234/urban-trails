@@ -4,13 +4,18 @@ import Signup from './components/Signup';
 import Account from './components/Account';
 import Map from './components/Map';
 import Trails from './components/Trails';
+import NewTrail from './components/NewTrail';
+import TrailView from './components/TrailView';
+import ManageTrails from './components/ManageTrails';
 import { Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext'; 
 import ProtectedRoute from './components/ProtectedRoute';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
+
 function App() {
+
   return (
     <div>
       <AuthContextProvider>
@@ -29,8 +34,24 @@ function App() {
           <ProtectedRoute>
               <Trails />
           </ProtectedRoute>} />
-      </Routes>
-      </AuthContextProvider>
+          <Route path='/trails' element={
+          <ProtectedRoute>
+              <Trails />
+          </ProtectedRoute>} />
+          <Route path='/new/trail' element={
+          <ProtectedRoute>
+              <NewTrail />
+          </ProtectedRoute>} />
+          <Route path="/trails/:id" element={ 
+          <ProtectedRoute>
+              <TrailView/>
+          </ProtectedRoute>} />
+          <Route path="/manage/trails" element={ 
+          <ProtectedRoute>
+              <ManageTrails/>
+          </ProtectedRoute>} />
+        </Routes>
+        </AuthContextProvider>
       </div>
   )
 }

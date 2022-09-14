@@ -5,9 +5,25 @@ import { collection, getDocs, addDoc, deleteDoc, doc, GeoPoint } from 'firebase/
 import Navigation from './Navigation';
 import '../App.css';
 
-const Trails = () => {
+const ManageTrails = () => {
+    const [newTitle, setNewTitle] = useState("")
+    const [newDescription, setNewDescription] = useState("")
+    const [newImage, setNewImage] = useState("")
+    const [newLatitude, setNewLatitude] = useState(0)
+    const [newLongitude, setNewLongitude] = useState(0)
     const [trails, setTrails] = useState([]);
     const trailsCollectionRef = collection(db, "trails")
+    
+    const createTrail = async () => {
+        await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription,
+            location: new GeoPoint(newLatitude, newLongitude),
+            image: newImage})
+    }
+
+    const deleteTrail = async (id) => {
+        const trailDoc = doc(db, "trails", id); 
+        await deleteDoc(trailDoc)
+    };
     
     useEffect(() => {
         
@@ -34,14 +50,18 @@ const Trails = () => {
                     <div className="card__body">
                     <img className="card__image" src={trail.image}></img>
                     <h4 className="card__title">{trail.title}</h4>
-                    <p className="card__description">{trail.description.substring(0, 200)}...</p>
-                    </div>
                     <Link to={`/trails/${trail.id}`}>
-                        <button className="card__btn">View Trail</button>
+                    <button className="card__btn">View Trail</button>
                     </Link>
                     </div>
+                    <button className="card__btn" onClick={() => {deleteTrail(trail.id)}
+                    }>Delete Trail</button>
+                    </div>  
                     </div>
+                    <div>
+                    </div>    
                     </div>
+                   
                 ) 
             })}
         </div>
@@ -50,4 +70,4 @@ const Trails = () => {
     )
 }
 
-export default Trails;
+export default ManageTrails;
