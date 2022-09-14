@@ -53,9 +53,10 @@ const NewTrail = () => {
         <Navigation />
         </div>
         <div className="content">
+        <div id="create-trail-form">
         <Form>
                 <Form.Group className="mb-3" controlId="formGridTitle">
-                    <Form.Label>Title</Form.Label>
+                    <Form.Label>Name</Form.Label>
                     <Form.Control onChange={(event) => 
                 setNewTitle(event.target.value)
             }/>
@@ -74,7 +75,7 @@ const NewTrail = () => {
                 </Row>
                     <Form.Group className="mb-3" controlId="formGridDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control onChange={(event) => setNewDescription(event.target.value)
+                    <Form.Control as="textarea" rows={5} onChange={(event) => setNewDescription(event.target.value)
             }/>
                 </Form.Group>
                     <Form.Group controlId="formFile" className="mb-3">
@@ -82,8 +83,10 @@ const NewTrail = () => {
                     <Form.Control type="file" onChange={(event) => setNewImage(event.target.files[0])
             }/>
                 </Form.Group>
-                <Button onClick={createTrail}>Add Trail</Button><br/><br/><br/>
+                
+                <Button onClick={createTrail}>Add Trail</Button>
         </Form>
+        </div>
         </div>       
         </div>     
     )
