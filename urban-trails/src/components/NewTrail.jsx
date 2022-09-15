@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 
 const NewTrail = () => {
     const [newTitle, setNewTitle] = useState("")
@@ -24,8 +25,16 @@ const NewTrail = () => {
         const imageUrl = await uploadImage();
         await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription,
             location: new GeoPoint(newLatitude, newLongitude),
-            image: imageUrl})
+            image: imageUrl});
+            refreshPage()
+            alert("Trail Added")
+            
+           
     }
+
+    const refreshPage = () => {
+        window.location.reload(false);
+      }
   
     useEffect(() => {
         
@@ -34,6 +43,7 @@ const NewTrail = () => {
             setTrails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
         };
         getTrails()
+       
     }, [])
 
     const uploadImage = async () => {
@@ -53,7 +63,11 @@ const NewTrail = () => {
         <Navigation />
         </div>
         <div className="content">
-        <div id="create-trail-form">
+        <div >
+    <Container id="create-trail-container">
+      <Row className="justify-content-md-center">
+        <Col xs lg="6" >
+        <h1 id="add-trail-title">Add Trail</h1>
         <Form>
                 <Form.Group className="mb-3" controlId="formGridTitle">
                     <Form.Label>Name</Form.Label>
@@ -84,8 +98,12 @@ const NewTrail = () => {
             }/>
                 </Form.Group>
                 
-                <Button onClick={createTrail}>Add Trail</Button>
+                <Button onClick={createTrail} >Submit</Button>
+
         </Form>
+        </Col>
+      </Row>
+    </Container>
         </div>
         </div>       
         </div>     

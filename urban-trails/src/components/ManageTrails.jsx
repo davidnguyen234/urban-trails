@@ -23,7 +23,13 @@ const ManageTrails = () => {
     const deleteTrail = async (id) => {
         const trailDoc = doc(db, "trails", id); 
         await deleteDoc(trailDoc)
+        refreshPage()
+        alert("Trail Deleted")
     };
+
+    const refreshPage = () => {
+        window.location.reload(false);
+      }
     
     useEffect(() => {
         
