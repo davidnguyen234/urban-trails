@@ -18,18 +18,18 @@ const NewTrail = () => {
     const [newImage, setNewImage] = useState("")
     const [newLatitude, setNewLatitude] = useState(0)
     const [newLongitude, setNewLongitude] = useState(0)
+    const [newLength, setNewLength] = useState(0)
+    const [newElevationGain, setNewElevationGain] = useState(0)
+    const [newHighestPoint, setNewHighestPoint] = useState(0)
     const [trails, setTrails] = useState([]);
     const trailsCollectionRef = collection(db, "trails")
     
     const createTrail = async () => {
         const imageUrl = await uploadImage();
-        await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription,
-            location: new GeoPoint(newLatitude, newLongitude),
+        await addDoc(trailsCollectionRef, {title: newTitle, description: newDescription, length: newLength, elevation: newElevationGain, highestPoint: newHighestPoint, location: new GeoPoint(newLatitude, newLongitude),
             image: imageUrl});
             refreshPage()
-            alert("Trail Added")
-            
-           
+            alert("Trail Added")      
     }
 
     const refreshPage = () => {
@@ -76,6 +76,29 @@ const NewTrail = () => {
             }/>
                 </Form.Group>
                 <Row className="mb-3">
+                    <Col>
+                    <Form.Group as={Col} controlId="formGridLength">
+                    <Form.Label>Length (miles)</Form.Label>
+                    <Form.Control onChange={(event) => setNewLength(event.target.value)
+            } type="number" step=".00001" />
+                    </Form.Group>
+                    </Col>
+                    <Col md="auto">
+                    <Form.Group as={Col} controlId="formGridElevation">
+                    <Form.Label>Elevation (feet)</Form.Label>
+                    <Form.Control onChange={(event) => setNewElevationGain(event.target.value)
+            } type="number" step=".00001" />
+                    </Form.Group>
+                    </Col>
+                    <Col md="auto">
+                    <Form.Group as={Col} controlId="formGridHighestPoint">
+                    <Form.Label>Highest Point (feet)</Form.Label>
+                    <Form.Control onChange={(event) => setNewHighestPoint(event.target.value)
+            } type="number" step=".00001" />
+                    </Form.Group>
+                    </Col>                
+                </Row>                
+                <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridLatitude">
                     <Form.Label>Latitude</Form.Label>
                     <Form.Control onChange={(event) => setNewLatitude(event.target.value)
@@ -89,7 +112,7 @@ const NewTrail = () => {
                 </Row>
                     <Form.Group className="mb-3" controlId="formGridDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" rows={5} onChange={(event) => setNewDescription(event.target.value)
+                    <Form.Control as="textarea" rows={8} onChange={(event) => setNewDescription(event.target.value)
             }/>
                 </Form.Group>
                     <Form.Group controlId="formFile" className="mb-3">

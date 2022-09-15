@@ -32,18 +32,23 @@ const TrailView = () => {
         <div>
             {trails.filter(trail => trail.id === id).map((trail, i) => (
                 <div key={i}>
+                <Row xs lg ={20}>
+                <h1 id="trail-view-title">{trail.title}</h1>
+                </Row><br />
+                <Row>
+                <Col><h6>LENGTH</h6> {trail.length} miles</Col>
+                <Col><h6>ELEVATION GAIN</h6> {trail.elevation} feet</Col>
+                <Col><h6>HIGHEST POINT</h6> {trail.highestPoint} feet</Col>
+                </Row><br /><br />                  
                 <Row>
                 <img src={trail.image} alt="trail"/>
-                </Row>
+                </Row><br />
                 <Row>
-                <h1>{trail.title}</h1>
-                </Row>
-                <Row>
-                <p>{trail.location.latitude}° N, {trail.location.longitude}° W</p>
-                </Row>
+                <p><strong>CO-ORDINATES:</strong> {trail.location.latitude}° N, {trail.location.longitude}° W</p>
+                </Row><br />
                 <Row>
                 <p>{trail.description}</p>
-                </Row>  
+                </Row><br />  
                 </div>
             ))}
         </div>	

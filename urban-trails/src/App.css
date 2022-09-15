@@ -58,7 +58,7 @@
   grid-template-columns: repeat(auto-fit, minmax(18rem, 18rem));
   gap: 2rem;
   justify-content: center;
-  margin: 2%;
+  margin: 3%;
 }
 
 .card {
@@ -83,6 +83,14 @@
     padding: 1rem;
   }
 
+  .card__length {
+    padding: 0 1rem;
+  }
+
+  .card__elevation {
+    padding: 0 1rem;
+  }  
+
   .card__description {
     padding: 0 1rem;
   }
@@ -98,6 +106,54 @@
     color: #FBFBFB;
     border-radius: radius;
     width: 86%;
+    transition: background 200ms ease-in, color 200ms ease-in;
+  }
+
+  .manage_card__btn {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .delete_card__btn {
+    padding: 2%;
+    width: 92px;
+    margin-bottom: 1%;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid;
+    background: #262626;
+    color: #FBFBFB;
+    border-radius: radius;
+    transition: background 200ms ease-in, color 200ms ease-in;
+  }
+
+  .edit_card__btn {
+    padding: 2%;
+    width: 92px;
+    margin-bottom: 1%;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid;
+    background: #262626;
+    color: #FBFBFB;
+    border-radius: radius;
+    transition: background 200ms ease-in, color 200ms ease-in;
+  }
+
+  .view_card__btn {
+    padding: 2%;
+    width: 92px;
+    margin-bottom: 1%;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid;
+    background: #262626;
+    color: #FBFBFB;
+    border-radius: radius;
     transition: background 200ms ease-in, color 200ms ease-in;
   }
 
@@ -136,4 +192,8 @@
 
   #trail-view-image {
     width: 1000px;
+  }
+
+  #trail-view-title{
+    font-size: 4em;
   }
