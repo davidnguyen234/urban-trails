@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
-import {Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
+import {Map, GoogleApiWrapper, Marker } from "google-maps-react";
 import Navigation from './Navigation';
+import { Link } from "react-router-dom";
 import '../App.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -26,10 +27,11 @@ export class MapContainer extends Component {
   renderTrails() {
     return this.state.trailLocations.map((trails, i) => {
       const trailLocation = {
-        id: trails.name, 
+        id: trails.name.substring(65,85), 
         latitude: trails.fields.location.geoPointValue.latitude,
         longitude: trails.fields.location.geoPointValue.longitude, 
         title: trails.fields.title.stringValue,
+        length: trails.fields.length.stringValue,
         description: trails.fields.description.stringValue,
         image: trails.fields.image.stringValue
       }
@@ -43,7 +45,8 @@ export class MapContainer extends Component {
             }}
             image={trailLocation.image}
             title={trailLocation.title}
-            description={trailLocation.description}
+            length={trailLocation.length}
+            description={trailLocation.description.substring(0, 250)}
             latitude={trailLocation.latitude}
             longitude={trailLocation.longitude}
           />
@@ -85,10 +88,16 @@ export class MapContainer extends Component {
             isOpen={this.state.showSidePanel}
             >
             <div>
-            <img src={this.state.selectedTrail.image} style={{maxWidth: 300}}/><br/><br/>
+            <Col>
+            <img src={this.state.selectedTrail.image} style={{maxWidth: 400}}/><br/><br/>
+            </Col>  
             <h4>{this.state.selectedTrail.title}</h4>
-            <p>{this.state.selectedTrail.description}</p>
-            <p>{this.state.selectedTrail.latitude}° N, {this.state.selectedTrail.longitude}° W</p>
+            <p>Length: {this.state.selectedTrail.length} miles</p>  
+            <p>{this.state.selectedTrail.description}...</p>
+                                <Link to={`/trails/${this.state.selectedTrail.id}`}>
+                    <p>Read more</p>
+                    </Link><br /><br />
+            
             </div>
             <TrailsList />
             </SlidingPanel>
