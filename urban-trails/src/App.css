@@ -119,15 +119,21 @@
     color: #262626;
     }
 
-    .card__btn a:active {
+  .card__btn a:active {
     color: #262626;
     }
 
-  #create-trail-form {
-    width: 50%;
-    margin-left: 1%;
-    margin-right: 25%;
-  }   
 
-  
+  #add-trail-title {
+    text-align: center;
+    margin-bottom: 10%;
+    margin-top: 4%;
+  }
 
+  #trail-vew-container {
+    margin-top: 10%;
+  } 
+
+  #trail-view-image {
+    width: 1000px;
+  }
